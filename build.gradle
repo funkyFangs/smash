@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id 'io.freefair.lombok' version '6.2.0'
+}
+
+group 'funky.fangs'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Logging
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: "$log4JVersion"
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: "$log4JVersion"
+
+    // Command Line
+    implementation group: 'info.picocli', name: 'picocli', version: "$picocliVersion"
+    annotationProcessor group: 'info.picocli', name: 'picocli-codegen', version: "$picocliVersion"
+
+    // Testing
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: "$mockitoVersion"
+    testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: "$mockitoVersion"
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: "$assertJVersion"
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: "$junitVersion"
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: "$junitVersion"
+}
+
+test {
+    useJUnitPlatform()
+}
