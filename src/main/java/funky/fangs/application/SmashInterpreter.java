@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
+import java.util.regex.Pattern;
 
 import static java.util.Objects.requireNonNull;
 
@@ -19,6 +20,8 @@ import static java.util.Objects.requireNonNull;
  */
 @Getter
 class SmashInterpreter {
+
+    private static final Pattern COMMENTS = Pattern.compile("[^asdfhjkl]++");
 
     private final Scanner scanner;
     private final PrintStream output;
@@ -48,7 +51,7 @@ class SmashInterpreter {
      * @throws ParseException if the code has syntactical errors
      */
     SmashInterpreter(String code, int cellSize, InputStream input, PrintStream output) throws ParseException {
-        this.code = requireNonNull(code);
+        this.code = COMMENTS.matcher(code).replaceAll("");
         this.cells = new byte[cellSize];
         scanner = new Scanner(input);
         this.output = requireNonNull(output);
@@ -56,8 +59,8 @@ class SmashInterpreter {
         // Builds loop points and validates loop balance
         Map<Integer, Integer> loopPoints = new HashMap<>();
         Stack<Integer> stack = new Stack<>();
-        for (int i = 0; i < code.length(); ++i) {
-            switch (code.charAt(i)) {
+        for (int i = 0; i < this.code.length(); ++i) {
+            switch (this.code.charAt(i)) {
                 case 'k' -> stack.push(i);
                 case 'l' -> {
                     // If an 'l' is found without a 'k'

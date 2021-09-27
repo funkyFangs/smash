@@ -33,7 +33,12 @@ public class SmashApplication implements Runnable {
     @Override
     public void run() {
         try {
-            new SmashInterpreter(Files.readString(Paths.get(fileName)), cellSize).interpret();
+            if (!fileName.endsWith(".smash")) {
+                LOGGER.error("Target must have .smash extension, but was: {}", fileName);
+            }
+            else {
+                new SmashInterpreter(Files.readString(Paths.get(fileName)), cellSize).interpret();
+            }
         }
         catch (IOException ioException) {
             LOGGER.error("Failed to open file: {}", fileName);
